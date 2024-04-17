@@ -4,8 +4,6 @@ import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 import { UsuarioRepository } from './repositories/usuario.repository';
 import { NotFoundError } from 'rxjs';
 import * as bcrypt from 'bcrypt';
-import { UsuarioEntity } from './entities/usuario.entity';
-import { send } from 'process';
 
 @Injectable()
 export class UsuarioService {
