@@ -1,26 +1,66 @@
 import { Injectable } from '@nestjs/common';
+import { NotFoundError } from 'rxjs';
+import { TransacaoRepository } from './repositories/transacao.repository';
 import { CreateTransacaoDto } from './dto/create-transacao.dto';
-import { UpdateTransacaoDto } from './dto/update-transacao.dto';
 
 @Injectable()
 export class TransacaoService {
-  create(createTransacaoDto: CreateTransacaoDto) {
-    return 'This action adds a new transacao';
+  constructor(private readonly repository: TransacaoRepository) {}
+
+  async create(createTransacaoDto) {
+    try {
+      return await this.repository.create(createTransacaoDto);
+    } catch (error) {
+      throw new NotFoundError(`${error}`);
+    }
+  }
+  /*
+  async findAll() {
+    try {
+      return await this.repository.findAll();
+    } catch (error) {
+      throw new NotFoundError(`${error}`);
+    }
   }
 
-  findAll() {
-    return `This action returns all transacao`;
+  async findOne(id: number) {
+    try {
+      if (!id) {
+        throw new NotFoundError('Id inválido');
+      } else {
+        return await this.repository.findOne(id);
+      }
+    } catch (error) {
+      throw new NotFoundError(`${error}`);
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} transacao`;
+  async update(id: number, updateTagDto: UpdateTagDto) {
+    try {
+      if (!id) {
+        throw new NotFoundError('Id inválido');
+      } else if (!updateTagDto) {
+        throw new NotFoundError('Informações da Tag inválida');
+      } else {
+        return await this.repository.update(id, {
+          nome: updateTagDto.nome.toUpperCase(),
+        });
+      }
+    } catch (error) {
+      throw new NotFoundError(`${error}`);
+    }
   }
 
-  update(id: number, updateTransacaoDto: UpdateTransacaoDto) {
-    return `This action updates a #${id} transacao`;
+  async remove(id: number) {
+    try {
+      if (!id) {
+        throw new NotFoundError('Id inválido');
+      } else {
+        return await this.repository.remove(id);
+      }
+    } catch (error) {
+      throw new NotFoundError(`${error}`);
+    }
   }
-
-  remove(id: number) {
-    return `This action removes a #${id} transacao`;
-  }
+  */
 }
