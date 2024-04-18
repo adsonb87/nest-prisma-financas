@@ -7,26 +7,20 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class TransacaoRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(createTransacaoDto) {
+  async create(tags, transacao) {
     try {
       return await this.prisma.transacao.create({
         data: {
-          ...createTransacaoDto,
-          TipoTransacao:
-            createTransacaoDto.tipo === 'RECEITA'
+          ...transacao,
+          tipo:
+            transacao.tipo == 'RECEITA'
               ? TipoTransacao.RECEITA
               : TipoTransacao.DESPESA,
           tags: {
-            //create: body.tags.map((tag) => ({nome: tag.toUpperCase(),})),
-            //connect: body.tags.map((tag) => ({nome: tag.toUpperCase(),})),
-
-            connectOrCreate: createTransacaoDto.tags.map((tag) => ({
-              where: {
-                nome: tag.toUpperCase(),
-              },
-              create: {
-                nome: tag.toUpperCase(),
-              },
+            //create: tags.map((t) => ({ nome: t })),
+            connectOrCreate: tags.map((t) => ({
+              where: { nome: t.toUpperCase() },
+              create: { nome: t.toUpperCase() },
             })),
           },
         },

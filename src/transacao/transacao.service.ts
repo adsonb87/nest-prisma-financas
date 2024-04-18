@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { NotFoundError } from 'rxjs';
 import { TransacaoRepository } from './repositories/transacao.repository';
-import { CreateTransacaoDto } from './dto/create-transacao.dto';
 
 @Injectable()
 export class TransacaoService {
@@ -9,7 +8,11 @@ export class TransacaoService {
 
   async create(createTransacaoDto) {
     try {
-      return await this.repository.create(createTransacaoDto);
+      const { tags, ...transacao } = createTransacaoDto;
+
+      //console.log(tags.map((t) => ({ nome: t })));
+
+      return await this.repository.create(tags, transacao);
     } catch (error) {
       throw new NotFoundError(`${error}`);
     }
