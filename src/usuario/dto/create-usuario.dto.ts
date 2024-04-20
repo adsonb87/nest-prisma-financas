@@ -37,17 +37,11 @@ export class CreateUsuarioDto extends UsuarioEntity {
     example: 'dd/mm/yyyy',
     description: 'Data de criação do usuário preenchida automaticamente',
   })
-  @IsNotEmpty({
-    message: 'Data de criação do usuário preenchida automaticamente',
-  })
   criadoEm: Date;
 
   @ApiProperty({
     example: 'dd/mm/yyyy',
     description: 'Data de atualização do usuário preenchida automaticamente',
-  })
-  @IsNotEmpty({
-    message: 'Data de atualização do usuário preenchida automaticamente',
   })
   atualizadoEm: Date;
 }

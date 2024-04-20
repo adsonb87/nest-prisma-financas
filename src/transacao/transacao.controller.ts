@@ -1,34 +1,90 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  NotFoundException,
+} from '@nestjs/common';
 import { TransacaoService } from './transacao.service';
-import { CreateTransacaoDto } from './dto/create-transacao.dto';
+import { ApiTags } from '@nestjs/swagger';
 import { UpdateTransacaoDto } from './dto/update-transacao.dto';
 
-@Controller('transacao')
+@ApiTags('Transacao')
+@Controller('/api/v1/transacao')
 export class TransacaoController {
   constructor(private readonly transacaoService: TransacaoService) {}
 
   @Post()
-  create(@Body() createTransacaoDto: CreateTransacaoDto) {
-    return this.transacaoService.create(createTransacaoDto);
+  async create(@Body() createTransacaoDto) {
+    try {
+      const retorno = await this.transacaoService.create(createTransacaoDto);
+      return {
+        message: 'sucesso',
+        result: retorno,
+      };
+    } catch (error) {
+      throw new NotFoundException(`${error.message}`);
+    }
   }
 
   @Get()
-  findAll() {
-    return this.transacaoService.findAll();
+  async findAll() {
+    try {
+      const retorno = await this.transacaoService.findAll();
+      return {
+        message: 'sucesso',
+        result: retorno,
+      };
+    } catch (error) {
+      throw new NotFoundException(`${error.message}`);
+    }
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.transacaoService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    try {
+      const retorno = await this.transacaoService.findOne(+id);
+      return {
+        message: 'sucesso',
+        result: retorno,
+      };
+    } catch (error) {
+      throw new NotFoundException(`${error.message}`);
+    }
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTransacaoDto: UpdateTransacaoDto) {
-    return this.transacaoService.update(+id, updateTransacaoDto);
+  async update(
+    @Param('id') id: string,
+    @Body() updateTransacaoDto: UpdateTransacaoDto,
+  ) {
+    try {
+      const retorno = await this.transacaoService.update(
+        +id,
+        updateTransacaoDto,
+      );
+      return {
+        message: 'sucesso',
+        result: retorno,
+      };
+    } catch (error) {
+      throw new NotFoundException(`${error.message}`);
+    }
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.transacaoService.remove(+id);
+  async remove(@Param('id') id: string) {
+    try {
+      const retorno = await this.transacaoService.remove(+id);
+      return {
+        message: 'sucesso',
+        result: retorno,
+      };
+    } catch (error) {
+      throw new NotFoundException(`${error.message}`);
+    }
   }
 }
