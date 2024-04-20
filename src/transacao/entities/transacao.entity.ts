@@ -5,8 +5,9 @@ export class TransacaoEntity implements Transacao {
   titulo: string;
   descricao: string;
   valor: number;
-  tipo: $Enums.TipoTransacao;
   usuarioId: number;
+  tipoTransacao: $Enums.Tipo;
+  categoriaId: number;
   criadoEm: Date;
   atualizadoEm: Date;
 }

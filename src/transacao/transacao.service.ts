@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { NotFoundError } from 'rxjs';
 import { TransacaoRepository } from './repositories/transacao.repository';
+import { UpdateTransacaoDto } from './dto/update-transacao.dto';
 
 @Injectable()
 export class TransacaoService {
@@ -8,16 +9,13 @@ export class TransacaoService {
 
   async create(createTransacaoDto) {
     try {
-      const { tags, ...transacao } = createTransacaoDto;
-
-      //console.log(tags.map((t) => ({ nome: t })));
-
-      return await this.repository.create(tags, transacao);
+      const { categoria, ...transacao } = createTransacaoDto;
+      return await this.repository.create(categoria, transacao);
     } catch (error) {
       throw new NotFoundError(`${error}`);
     }
   }
-  /*
+
   async findAll() {
     try {
       return await this.repository.findAll();
@@ -38,16 +36,14 @@ export class TransacaoService {
     }
   }
 
-  async update(id: number, updateTagDto: UpdateTagDto) {
+  async update(id: number, updateTransacaoDto: UpdateTransacaoDto) {
     try {
       if (!id) {
         throw new NotFoundError('Id inválido');
-      } else if (!updateTagDto) {
+      } else if (!updateTransacaoDto) {
         throw new NotFoundError('Informações da Tag inválida');
       } else {
-        return await this.repository.update(id, {
-          nome: updateTagDto.nome.toUpperCase(),
-        });
+        return await this.repository.update(id, updateTransacaoDto);
       }
     } catch (error) {
       throw new NotFoundError(`${error}`);
@@ -65,5 +61,4 @@ export class TransacaoService {
       throw new NotFoundError(`${error}`);
     }
   }
-  */
 }

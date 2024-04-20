@@ -10,7 +10,6 @@ import {
 } from '@nestjs/common';
 import { TransacaoService } from './transacao.service';
 import { ApiTags } from '@nestjs/swagger';
-import { CreateTransacaoDto } from './dto/create-transacao.dto';
 import { UpdateTransacaoDto } from './dto/update-transacao.dto';
 
 @ApiTags('Transacao')
@@ -30,7 +29,7 @@ export class TransacaoController {
       throw new NotFoundException(`${error.message}`);
     }
   }
-  /*
+
   @Get()
   async findAll() {
     try {
@@ -88,5 +87,4 @@ export class TransacaoController {
       throw new NotFoundException(`${error.message}`);
     }
   }
-  */
 }

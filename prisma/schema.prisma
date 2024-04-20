@@ -38,30 +38,32 @@ model Perfil {
 }
 
 //MODO IMPLICITO DE RELACIONAMENTO MANY TO MANY
-model Tag {
-  id         Int         @id @default(autoincrement())
-  nome       String      @unique
-  transacoes Transacao[]
+model Categoria {
+  id            Int         @id @default(autoincrement())
+  nome          String
+  transacoes    Transacao[]
+  tipoCategoria Tipo
 
-  @@map("tags")
+  @@map("categorias")
 }
 
 model Transacao {
-  id           Int           @id @default(autoincrement())
-  titulo       String
-  descricao    String?
-  valor        Float
-  tipo         TipoTransacao
-  usuario      Usuario       @relation(fields: [usuarioId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  usuarioId    Int
-  tags         Tag[]
-  criadoEm     DateTime      @default(now())
-  atualizadoEm DateTime      @updatedAt
+  id            Int       @id @default(autoincrement())
+  titulo        String
+  descricao     String?
+  valor         Float
+  tipoTransacao Tipo
+  usuario       Usuario   @relation(fields: [usuarioId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  usuarioId     Int
+  categoria     Categoria @relation(fields: [categoriaId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  categoriaId   Int
+  criadoEm      DateTime  @default(now())
+  atualizadoEm  DateTime  @updatedAt
 
   @@map("transacoes")
 }
 
-enum TipoTransacao {
+enum Tipo {
   RECEITA
   DESPESA
 }
