@@ -1,8 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { TagEntity } from '../entities/tag.entity';
+import { CategoriaEntity } from '../entities/categoria.entity';
 import { IsNotEmpty, IsString } from 'class-validator';
+import { $Enums } from '@prisma/client';
 
-export class CreateTagDto extends TagEntity {
+export class CreateCategoriaDto extends CategoriaEntity {
   @ApiProperty({
     example: 'Descrição da TAG',
     description: 'Descrição utilizada pela TAG',
@@ -12,4 +13,9 @@ export class CreateTagDto extends TagEntity {
   })
   @IsString()
   nome: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  tipoCategoria: $Enums.Tipo;
 }

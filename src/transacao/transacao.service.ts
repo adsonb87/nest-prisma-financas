@@ -1,26 +1,64 @@
 import { Injectable } from '@nestjs/common';
-import { CreateTransacaoDto } from './dto/create-transacao.dto';
+import { NotFoundError } from 'rxjs';
+import { TransacaoRepository } from './repositories/transacao.repository';
 import { UpdateTransacaoDto } from './dto/update-transacao.dto';
 
 @Injectable()
 export class TransacaoService {
-  create(createTransacaoDto: CreateTransacaoDto) {
-    return 'This action adds a new transacao';
+  constructor(private readonly repository: TransacaoRepository) {}
+
+  async create(createTransacaoDto) {
+    try {
+      const { categoria, ...transacao } = createTransacaoDto;
+      return await this.repository.create(categoria, transacao);
+    } catch (error) {
+      throw new NotFoundError(`${error}`);
+    }
   }
 
-  findAll() {
-    return `This action returns all transacao`;
+  async findAll() {
+    try {
+      return await this.repository.findAll();
+    } catch (error) {
+      throw new NotFoundError(`${error}`);
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} transacao`;
+  async findOne(id: number) {
+    try {
+      if (!id) {
+        throw new NotFoundError('Id inválido');
+      } else {
+        return await this.repository.findOne(id);
+      }
+    } catch (error) {
+      throw new NotFoundError(`${error}`);
+    }
   }
 
-  update(id: number, updateTransacaoDto: UpdateTransacaoDto) {
-    return `This action updates a #${id} transacao`;
+  async update(id: number, updateTransacaoDto: UpdateTransacaoDto) {
+    try {
+      if (!id) {
+        throw new NotFoundError('Id inválido');
+      } else if (!updateTransacaoDto) {
+        throw new NotFoundError('Informações da Tag inválida');
+      } else {
+        return await this.repository.update(id, updateTransacaoDto);
+      }
+    } catch (error) {
+      throw new NotFoundError(`${error}`);
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} transacao`;
+  async remove(id: number) {
+    try {
+      if (!id) {
+        throw new NotFoundError('Id inválido');
+      } else {
+        return await this.repository.remove(id);
+      }
+    } catch (error) {
+      throw new NotFoundError(`${error}`);
+    }
   }
 }
