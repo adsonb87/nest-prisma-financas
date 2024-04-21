@@ -7,7 +7,7 @@ import { Tipo } from '@prisma/client';
 export class TransacaoRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(categoria, transacao) {
+  async create(transacao) {
     try {
       return await this.prisma.transacao.create({
         //connect: body.tags.map((tag) => ({nome: tag.toUpperCase(),})),
@@ -15,12 +15,6 @@ export class TransacaoRepository {
           ...transacao,
           tipoTransacao:
             transacao.tipoTransacao == 'RECEITA' ? Tipo.RECEITA : Tipo.DESPESA,
-          categoria: {
-            connect: {
-              id: categoria.id,
-              nome: categoria.nome,
-            },
-          },
         },
         include: {
           categoria: true,
@@ -33,6 +27,28 @@ export class TransacaoRepository {
   async findAll() {
     try {
       return await this.prisma.transacao.findMany({
+        include: { categoria: true },
+      });
+    } catch (error) {
+      throw new NotFoundError(`${error}`);
+    }
+  }
+
+  async findTransacaoUsuario(id: number) {
+    try {
+      return await this.prisma.transacao.findMany({
+        where: { usuarioId: id },
+        include: { categoria: true },
+      });
+    } catch (error) {
+      throw new NotFoundError(`${error}`);
+    }
+  }
+
+  async findTransacaoTipo(tipo) {
+    try {
+      return await this.prisma.transacao.findMany({
+        where: { tipoTransacao: tipo },
         include: { categoria: true },
       });
     } catch (error) {

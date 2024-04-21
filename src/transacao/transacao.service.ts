@@ -9,8 +9,7 @@ export class TransacaoService {
 
   async create(createTransacaoDto) {
     try {
-      const { categoria, ...transacao } = createTransacaoDto;
-      return await this.repository.create(categoria, transacao);
+      return await this.repository.create(createTransacaoDto);
     } catch (error) {
       throw new NotFoundError(`${error}`);
     }
@@ -19,6 +18,32 @@ export class TransacaoService {
   async findAll() {
     try {
       return await this.repository.findAll();
+    } catch (error) {
+      throw new NotFoundError(`${error}`);
+    }
+  }
+
+  async findTransacaoUsuario(id: number) {
+    try {
+      if (!id) {
+        throw new NotFoundError('Id inválido');
+      } else {
+        return await this.repository.findTransacaoUsuario(id);
+      }
+    } catch (error) {
+      throw new NotFoundError(`${error}`);
+    }
+  }
+
+  async findTransacaoTipo(params) {
+    try {
+      if (!params) {
+        throw new NotFoundError('Parâmetros inválidos');
+      } else {
+        return await this.repository.findTransacaoTipo(
+          params.tipoTransacao.toUpperCase(),
+        );
+      }
     } catch (error) {
       throw new NotFoundError(`${error}`);
     }
@@ -41,7 +66,7 @@ export class TransacaoService {
       if (!id) {
         throw new NotFoundError('Id inválido');
       } else if (!updateTransacaoDto) {
-        throw new NotFoundError('Informações da Tag inválida');
+        throw new NotFoundError('Informações da transação inválida');
       } else {
         return await this.repository.update(id, updateTransacaoDto);
       }
